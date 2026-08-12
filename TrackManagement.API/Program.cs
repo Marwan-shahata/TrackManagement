@@ -122,7 +122,6 @@ builder.Services.AddAuthorization();
 
 // ==========================
 // Build
-// أي builder.Services لازم يكون فوق
 // ==========================
 
 var app = builder.Build();
