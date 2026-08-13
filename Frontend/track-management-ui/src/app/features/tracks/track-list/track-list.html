@@ -50,7 +50,10 @@
       </thead>
 
       <tbody>
-        <tr *ngFor="let track of tracks">
+        <tr
+  *ngFor="let track of tracks"
+  (click)="openTrack(track.id)"
+  class="clickable-row">
           <td>{{ track.title }}</td>
           <td>{{ track.artistName }}</td>
           <td>{{ track.genre }}</td>

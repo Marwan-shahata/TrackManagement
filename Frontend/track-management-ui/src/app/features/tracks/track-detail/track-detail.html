@@ -1,0 +1,83 @@
+<div class="page-container">
+  <button type="button" class="back-button" (click)="goBack()">← Back to Tracks</button>
+
+  <p *ngIf="loading">Loading track details...</p>
+
+  <p class="error" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </p>
+
+  <div *ngIf="track && !loading">
+    <div class="header">
+      <div>
+        <h1>{{ track.title }}</h1>
+
+        <p>
+          {{ track.artistName }}
+        </p>
+      </div>
+
+      <span class="status" [ngClass]="track.status.toLowerCase()">
+        {{ track.status }}
+      </span>
+    </div>
+
+    <div class="details-card">
+      <div class="detail">
+        <span>ISRC</span>
+        <strong>{{ track.isrc }}</strong>
+      </div>
+
+      <div class="detail">
+        <span>Genre</span>
+        <strong>{{ track.genre }}</strong>
+      </div>
+
+      <div class="detail">
+        <span>Release Date</span>
+        <strong>
+          {{ track.releaseDate | date }}
+        </strong>
+      </div>
+
+      <div class="detail">
+        <span>Artist</span>
+        <strong>{{ track.artistName }}</strong>
+      </div>
+    </div>
+
+    <h2>DSP Distribution</h2>
+
+    <table *ngIf="track.distributions.length > 0">
+      <thead>
+        <tr>
+          <th>DSP</th>
+          <th>Submitted At</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let distribution of track.distributions">
+          <td>
+            {{ distribution.dspName }}
+          </td>
+
+          <td>
+            {{ distribution.submittedAt | date: 'medium' }}
+          </td>
+
+          <td>
+            <span class="distribution-status" [ngClass]="distribution.status.toLowerCase()">
+              {{ distribution.status }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="empty" *ngIf="track.distributions.length === 0">
+      This track has not been distributed to any DSP yet.
+    </p>
+  </div>
+</div>

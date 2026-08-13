@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { Track } from '../models/track.model';
 import { TrackApiService } from '../services/track-api.service';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-track-list',
   imports: [CommonModule, FormsModule],
@@ -26,7 +26,10 @@ export class TrackList implements OnInit {
   ];
 
   constructor(
-    private readonly trackApiService: TrackApiService
+    private readonly trackApiService: TrackApiService,
+      private readonly cdr: ChangeDetectorRef,
+  private readonly router: Router
+
   ) {}
 
   ngOnInit(): void {
@@ -34,24 +37,34 @@ export class TrackList implements OnInit {
   }
 
   loadTracks(): void {
-    this.loading = true;
-    this.errorMessage = '';
+  this.loading = true;
+  this.errorMessage = '';
 
-    this.trackApiService
-      .getTracks(this.selectedStatus || undefined)
-      .subscribe({
-        next: (tracks) => {
-          this.tracks = tracks;
-          this.loading = false;
-        },
-        error: () => {
-          this.errorMessage = 'Failed to load tracks.';
-          this.loading = false;
-        }
-      });
-  }
+  this.trackApiService
+    .getTracks(this.selectedStatus || undefined)
+    .subscribe({
+      next: (tracks) => {
+        this.tracks = tracks;
+        this.loading = false;
+
+        this.cdr.markForCheck();
+      },
+
+      error: () => {
+        this.errorMessage = 'Failed to load tracks.';
+        this.loading = false;
+
+        this.cdr.markForCheck();
+      }
+    });
+}
 
   onStatusChange(): void {
     this.loadTracks();
   }
+
+  openTrack(id: number): void {
+  this.router.navigate(['/tracks', id]);
+  }
+  
 }
