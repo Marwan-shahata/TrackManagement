@@ -1,0 +1,76 @@
+<div class="page-container">
+  <div class="header">
+    <div>
+      <h1>Track Management</h1>
+      <p>Manage and monitor distributed music tracks.</p>
+    </div>
+
+    <div class="filter">
+      <label for="status">Status</label>
+
+      <select
+        id="status"
+        [(ngModel)]="selectedStatus"
+        (change)="onStatusChange()">
+
+        <option value="">All</option>
+
+        <option
+          *ngFor="let status of statuses.slice(1)"
+          [value]="status">
+          {{ status }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <p *ngIf="loading">
+    Loading tracks...
+  </p>
+
+  <p
+    class="error"
+    *ngIf="errorMessage">
+    {{ errorMessage }}
+  </p>
+
+  <div
+    class="table-wrapper"
+    *ngIf="!loading && !errorMessage">
+
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Artist</th>
+          <th>Genre</th>
+          <th>Release Date</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let track of tracks">
+          <td>{{ track.title }}</td>
+          <td>{{ track.artistName }}</td>
+          <td>{{ track.genre }}</td>
+          <td>{{ track.releaseDate | date }}</td>
+
+          <td>
+            <span
+              class="status"
+              [ngClass]="track.status.toLowerCase()">
+              {{ track.status }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p
+      class="empty"
+      *ngIf="tracks.length === 0">
+      No tracks found.
+    </p>
+  </div>
+</div>
