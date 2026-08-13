@@ -1,6 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment';
+
 
 import { Track } from '../models/track.model';
 import { TrackDetails } from '../models/track-details.model';
@@ -9,7 +11,7 @@ import { TrackDetails } from '../models/track-details.model';
   providedIn: 'root'
 })
 export class TrackApiService {
-  private readonly apiUrl = 'http://localhost:5074/api/tracks';
+  private readonly apiUrl = `${environment.apiUrl}/tracks`;
 
   constructor(private readonly http: HttpClient) {}
 

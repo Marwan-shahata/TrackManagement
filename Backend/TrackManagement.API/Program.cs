@@ -124,6 +124,17 @@ builder.Services.AddAuthorization();
 // Build
 // ==========================
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Frontend", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:4200")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 // ==========================
@@ -152,9 +163,12 @@ if (app.Environment.IsDevelopment())
 // Middleware
 // ==========================
 
+
 app.UseExceptionHandler();
 
 app.UseHttpsRedirection();
+
+app.UseCors("Frontend");
 
 app.UseAuthentication();
 app.UseAuthorization();
